@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gemplex | Verify OTP</title>
+    <script>
+      (function(){
+        try {
+          var theme = localStorage.getItem("gemplex-theme");
+          if (theme !== "light" && theme !== "dark") {
+            theme = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+          }
+          var city = localStorage.getItem("gemplex-selected-city") || "all";
+          document.documentElement.classList.add("gemplex-theme-preload");
+          document.documentElement.dataset.theme = theme;
+          document.documentElement.dataset.cityTheme = city;
+          document.documentElement.style.colorScheme = theme;
+        } catch (error) {
+          document.documentElement.classList.add("gemplex-theme-preload");
+          document.documentElement.dataset.theme = "dark";
+          document.documentElement.dataset.cityTheme = "all";
+        }
+      })();
+    </script>
+    <script src="js/theme.js?v=4"></script>
+    <link rel="stylesheet" href="css/styles.css?v=116">
+  </head>
+  <body class="ott-flow-page auth-page">
+    <header class="flow-topbar">
+      <a class="brand" href="javascript:void(0)" aria-label="Gemplex">
+        <img class="brand-logo" src="assets/gemplex-logo-teal.png?v=3" alt="Gemplex">
+      </a>
+      <a class="flow-link" href="login.html">Change Number</a>
+    </header>
+
+    <main class="auth-shell">
+      <section class="auth-card">
+        <span class="eyebrow">OTP verification</span>
+        <h1>Enter OTP</h1>
+        <p id="otpIntro">We sent a 6 digit OTP to your mobile number.</p>
+
+        <form id="verifyForm">
+          <label>
+            <span>OTP code</span>
+            <input id="otpInput" type="text" inputmode="numeric" maxlength="6" placeholder="6 digit OTP" autocomplete="one-time-code" required>
+          </label>
+          <button class="primary-btn" type="submit">Verify & Continue</button>
+        </form>
+
+        <button class="secondary-btn auth-inline-action" id="resendOtpButton" type="button">Resend OTP</button>
+        <p class="auth-note" id="authMessage" aria-live="polite"></p>
+      </section>
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+    <script src="js/firebase-config.js?v=1"></script>
+    <script src="js/firebase-auth.js?v=7"></script>
+    <script src="js/auth-client.js"></script>
+    <script src="js/otp.js?v=2"></script>
+  </body>
+</html>

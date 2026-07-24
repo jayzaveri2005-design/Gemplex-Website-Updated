@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gemplex | Har Shehar Ki Kahani</title>
+    <script>
+      (function(){
+        try {
+          if ("scrollRestoration" in history) {
+            history.scrollRestoration = "manual";
+          }
+          var navigation = performance.getEntriesByType && performance.getEntriesByType("navigation")[0];
+          var isReload = navigation ? navigation.type === "reload" : performance.navigation && performance.navigation.type === 1;
+          if (!isReload) {
+            return;
+          }
+          if (window.location.hash) {
+            history.replaceState(null, document.title, window.location.pathname + window.location.search);
+          }
+          var keepAtTop = function(){
+            window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+          };
+          keepAtTop();
+          window.requestAnimationFrame(keepAtTop);
+          window.addEventListener("pageshow", keepAtTop, { once: true });
+          window.addEventListener("load", function(){
+            keepAtTop();
+            window.setTimeout(keepAtTop, 80);
+          }, { once: true });
+        } catch (error) {}
+      })();
+    </script>
+    <script>
+      (function(){
+        try {
+          var theme = localStorage.getItem("gemplex-theme");
+          if (theme !== "light" && theme !== "dark") {
+            theme = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+          }
+          var city = localStorage.getItem("gemplex-selected-city") || "all";
+          document.documentElement.classList.add("gemplex-theme-preload");
+          document.documentElement.dataset.theme = theme;
+          document.documentElement.dataset.cityTheme = city;
+          document.documentElement.style.colorScheme = theme;
+        } catch (error) {
+          document.documentElement.classList.add("gemplex-theme-preload");
+          document.documentElement.dataset.theme = "dark";
+          document.documentElement.dataset.cityTheme = "all";
+        }
+      })();
+    </script>
+    <script>
+      (function(){
+        try {
+          var theme = localStorage.getItem("gemplex-theme");
+          if (theme !== "light" && theme !== "dark") {
+            theme = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+          }
+          var city = localStorage.getItem("gemplex-selected-city") || "all";
+          document.documentElement.classList.add("gemplex-theme-preload");
+          document.documentElement.dataset.theme = theme;
+          document.documentElement.dataset.cityTheme = city;
+          document.documentElement.style.colorScheme = theme;
+        } catch (error) {
+          document.documentElement.classList.add("gemplex-theme-preload");
+          document.documentElement.dataset.theme = "dark";
+          document.documentElement.dataset.cityTheme = "all";
+        }
+      })();
+    </script>
+    <script src="js/theme.js?v=4"></script>
+    <link rel="stylesheet" href="css/styles.css?v=193">
+  </head>
+  <body>
+    <header class="topbar" aria-label="Primary navigation">
+      <a class="brand" href="javascript:void(0)" aria-label="Gemplex">
+        <img class="brand-logo" src="assets/gemplex-logo-teal.png?v=3" alt="Gemplex">
+      </a>
+
+      <nav class="nav-links" aria-label="Gemplex sections">
+        <a href="#home" data-nav-filter="all">Home</a>
+        <a href="#city-network" data-nav-filter="movie">Movies</a>
+        <a href="#city-network" data-nav-filter="movie">Web Series</a>
+        <a href="#city-network" data-nav-filter="music">Music</a>
+        <a href="#events">Events</a>
+        <a href="#launch-plan">Launch Plan</a>
+        <label class="nav-city-select">
+          <span>City</span>
+          <strong id="citySelectLabel">All cities</strong>
+          <select id="citySelect" aria-label="Choose city">
+            <option value="all">All cities</option>
+          </select>
+        </label>
+      </nav>
+
+      <div class="top-actions">
+        <label class="search" aria-label="Search titles">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m16.5 16.5 4 4"></path>
+          </svg>
+          <input id="searchInput" type="search" placeholder="Search Gemplex" autocomplete="off" aria-controls="searchResults" aria-expanded="false">
+        </label>
+        <div class="search-results" id="searchResults" aria-live="polite"></div>
+        <button class="icon-btn" type="button" aria-label="Notifications">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+            <path d="M13.7 21a2 2 0 0 1-3.4 0"></path>
+          </svg>
+        </button>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light mode" aria-pressed="false">
+          <span class="theme-track" aria-hidden="true">
+            <span class="theme-knob">
+              <svg class="moon-icon" viewBox="0 0 24 24">
+                <path d="M20 15.2A8 8 0 0 1 8.8 4 7.1 7.1 0 1 0 20 15.2z"></path>
+              </svg>
+              <svg class="sun-icon" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="4"></circle>
+                <path d="M12 2v2"></path>
+                <path d="M12 20v2"></path>
+                <path d="m4.93 4.93 1.41 1.41"></path>
+                <path d="m17.66 17.66 1.41 1.41"></path>
+                <path d="M2 12h2"></path>
+                <path d="M20 12h2"></path>
+                <path d="m6.34 17.66-1.41 1.41"></path>
+                <path d="m19.07 4.93-1.41 1.41"></path>
+              </svg>
+            </span>
+          </span>
+        </button>
+        <button class="profile" id="profileButton" type="button" aria-label="Open account dashboard" aria-haspopup="dialog" aria-expanded="false">J</button>
+        <div class="account-menu" id="accountMenu" role="dialog" aria-label="User dashboard" hidden>
+          <div class="account-menu-head">
+            <span class="account-avatar" id="accountAvatar">G</span>
+            <div>
+              <strong id="accountName">Gemplex Viewer</strong>
+              <span id="accountEmail">Login to manage your account</span>
+            </div>
+          </div>
+          <div class="account-menu-actions">
+            <a class="account-action primary" id="accountLoginLink" href="login.html">Login / Switch Account</a>
+            <button class="account-action" id="accountLogoutButton" type="button">Logout</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="home">
+      <section class="hero" aria-label="Gemplex city entertainment network">
+        <picture class="hero-art">
+          <source media="(max-width: 760px)" srcset="assets/hero-mobile.svg?v=19">
+          <img src="assets/hero-gemplex.svg?v=19" alt="A cinematic Gemplex original scene with a glowing city and central hero silhouette" fetchpriority="high" decoding="async">
+        </picture>
+
+        <div class="hero-copy">
+          <span class="eyebrow">Har Shehar Ki Kahani</span>
+          <h1>Gemplex</h1>
+          <p>The entertainment platform where every city gets its spotlight. Gemplex brings local creators, regional stories, music, devotional voices, comedy, and short-form moments into one city-first network.</p>
+          <div class="hero-meta" aria-label="Featured title details">
+            <span>Your city</span>
+            <span>Your stories</span>
+            <span>Your screen</span>
+          </div>
+          <div class="hero-actions">
+            <a class="primary-btn hero-watch-btn" href="#city-network">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 3v18l13-9z"></path>
+              </svg>
+              Watch now
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="quick-strip" aria-label="Gemplex highlights">
+        <article>
+          <strong>City</strong>
+          <span>spotlight-first discovery</span>
+        </article>
+        <article>
+          <strong>Creator</strong>
+          <span>profiles, badges, ranking</span>
+        </article>
+        <article>
+          <strong>Shorts</strong>
+          <span>clips, reels, dialogue moments</span>
+        </article>
+        <article>
+          <strong>Voting</strong>
+          <span>participation and recognition</span>
+        </article>
+      </section>
+
+      <section class="rail" id="city-network" aria-labelledby="trendingTitle">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">City Entertainment Network</span>
+            <h2 id="trendingTitle">Every city becomes discoverable</h2>
+          </div>
+          <div class="tabs category-tabs" role="tablist" aria-label="Content category">
+            <button class="filter-chip" type="button" aria-label="Content filters" aria-expanded="false">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 5h16"></path>
+                <path d="M7 12h10"></path>
+                <path d="M10 19h4"></path>
+              </svg>
+              <span>Filter</span>
+            </button>
+            <div class="filter-menu" role="menu" aria-label="Content filter options">
+              <button class="tab is-active" type="button" data-filter="all">
+                <span class="category-icon all-category" aria-hidden="true"></span>
+                <span>All</span>
+              </button>
+              <button class="tab" type="button" data-filter="city">
+                <span class="category-icon city-category" aria-hidden="true"></span>
+                <span>Cities</span>
+              </button>
+              <button class="tab" type="button" data-filter="movie">
+                <span class="category-icon movie-category" aria-hidden="true"></span>
+                <span>Movies</span>
+              </button>
+              <button class="tab" type="button" data-filter="ai">
+                <span class="category-icon ai-category" aria-hidden="true"></span>
+                <span>AI Videos</span>
+              </button>
+              <button class="tab" type="button" data-filter="cartoon">
+                <span class="category-icon cartoon-category" aria-hidden="true"></span>
+                <span>Cartoons</span>
+              </button>
+              <button class="tab" type="button" data-filter="devotional">
+                <span class="category-icon devotional-category" aria-hidden="true"></span>
+                <span>Devotional</span>
+              </button>
+              <button class="tab" type="button" data-filter="music">
+                <span class="category-icon music-category" aria-hidden="true"></span>
+                <span>Music</span>
+              </button>
+              <button class="tab" type="button" data-filter="creator">
+                <span class="category-icon creator-category" aria-hidden="true"></span>
+                <span>Creators</span>
+              </button>
+              <button class="tab" type="button" data-filter="shorts">
+                <span class="category-icon shorts-category" aria-hidden="true"></span>
+                <span>Shorts</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="poster-grid" id="posterGrid" aria-live="polite"></div>
+      </section>
+
+      <section class="watch-panel" id="creators" aria-labelledby="originalsTitle">
+        <div class="panel-copy">
+          <span class="eyebrow">Creator Network</span>
+          <h2 id="originalsTitle">People should want to appear on Gemplex.</h2>
+          <p>Gemplex gives emerging creators recognition through city badges, creator profiles, featured spotlights, local popularity, public voting, and city leaderboards.</p>
+          <button class="secondary-btn" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 12h18"></path>
+              <path d="m14 5 7 7-7 7"></path>
+            </svg>
+            View Spotlight
+          </button>
+        </div>
+
+        <div class="creator-showcase" aria-label="Creator spotlight preview">
+          <div class="creator-card">
+            <div class="creator-avatar" aria-hidden="true">
+              <span></span>
+            </div>
+            <div>
+              <span class="creator-badge">Patna Rising Artist</span>
+              <h3>Aarav Mehta</h3>
+              <p>Folk singer turning city stories into cinematic music shorts.</p>
+            </div>
+          </div>
+          <div class="creator-stats" aria-label="Creator stats">
+            <span><strong>Patna</strong> City</span>
+            <span><strong>Hindi</strong> Language</span>
+            <span><strong>#4</strong> Trending</span>
+          </div>
+          <div class="spotlight-list" aria-label="Creator recognition list">
+            <span>Featured badge</span>
+            <span>Audience voting</span>
+            <span>City leaderboard</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="rail events-section" id="events" aria-labelledby="eventsTitle">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Events & Shows</span>
+            <h2 id="eventsTitle">Live in your city</h2>
+          </div>
+        </div>
+        <div class="event-grid">
+          <article class="event-card">
+            <span class="event-date"><strong>25</strong><span>May</span></span>
+            <div>
+              <strong>Mumbai Film Festival</strong>
+              <span>NCPA, Mumbai</span>
+            </div>
+          </article>
+          <article class="event-card">
+            <span class="event-date"><strong>02</strong><span>Jun</span></span>
+            <div>
+              <strong>Bollywood Night Live</strong>
+              <span>Shanmukhananda Hall</span>
+            </div>
+          </article>
+          <article class="event-card">
+            <span class="event-date"><strong>15</strong><span>Jun</span></span>
+            <div>
+              <strong>Stand-Up Mumbai</strong>
+              <span>The Habitat</span>
+            </div>
+          </article>
+          <article class="event-card">
+            <span class="event-date"><strong>29</strong><span>Jun</span></span>
+            <div>
+              <strong>City Music Fest</strong>
+              <span>Jio World Garden</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="rail participation-section" aria-labelledby="continueTitle">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Participation loops</span>
+            <h2 id="continueTitle">Built for pride, recognition, and sharing</h2>
+          </div>
+        </div>
+        <div class="continue-grid">
+          <article class="continue-card" id="orbit-nine-card">
+            <img src="assets/wide-orbit.svg?v=18" alt="Indore Trending wide preview">
+            <div>
+              <strong>Indore Trending</strong>
+              <span>Local creators, emotional stories, and weekly city charts</span>
+              <div class="meter"><span style="width: 62%"></span></div>
+            </div>
+          </article>
+          <article class="continue-card" id="midnight-masala-card">
+            <img src="assets/wide-kitchen.svg?v=20" alt="Patna Rising Artist wide preview">
+            <div>
+              <strong>Patna Rising Artist</strong>
+              <span>Creator badges, music spotlights, and audience voting</span>
+              <div class="meter"><span style="width: 78%"></span></div>
+            </div>
+          </article>
+          <article class="continue-card" id="river-of-glass-card">
+            <img src="assets/wide-river.svg?v=19" alt="Har Shehar Originals wide preview">
+            <div>
+              <strong>Har Shehar Originals</strong>
+              <span>Short films, city stories, creator battles, and local premieres</span>
+              <div class="meter"><span style="width: 39%"></span></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="plans" id="launch-plan" aria-labelledby="plansTitle">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">30-Day Launch Focus</span>
+            <h2 id="plansTitle">Launch clear, local, emotional, and shareable</h2>
+          </div>
+        </div>
+        <div class="plan-grid">
+          <article class="plan">
+            <h3>Week 1</h3>
+            <p>Freeze the positioning, tagline, first cities, brand personality, MVP screens, and launch sheet.</p>
+            <strong>Brand<span> clarity</span></strong>
+            <button type="button">Lock Direction</button>
+          </article>
+          <article class="plan featured-plan">
+            <span class="plan-badge">Creator-first</span>
+            <h3>Weeks 2-3</h3>
+            <p>Shape the homepage, city rows, creator profiles, shorts layer, outreach list, and first spotlight content.</p>
+            <strong>20<span> creators</span></strong>
+            <a class="plan-link" href="#creators">Build Network</a>
+          </article>
+          <article class="plan">
+            <h3>Week 4</h3>
+            <p>Prepare teaser posts, city-pride campaigns, creator announcements, soft launch feedback, and public launch assets.</p>
+            <strong>Launch<span> ready</span></strong>
+            <button type="button">Prepare Hype</button>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span class="brand mini"><img class="footer-brand-logo" src="assets/gemplex-logo-teal.png?v=3" alt="Gemplex"></span>
+    </footer>
+
+    <script src="js/text-utils.js?v=3"></script>
+    <script src="js/content-store.js?v=8"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/firebase-auth.js?v=11"></script>
+    <script src="js/script.js?v=85"></script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

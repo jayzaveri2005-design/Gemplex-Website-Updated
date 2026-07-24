@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gemplex | Create Account</title>
+    <script>
+      (function(){
+        try {
+          var theme = localStorage.getItem("gemplex-theme");
+          if (theme !== "light" && theme !== "dark") {
+            theme = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+          }
+          var city = localStorage.getItem("gemplex-selected-city") || "all";
+          document.documentElement.classList.add("gemplex-theme-preload");
+          document.documentElement.dataset.theme = theme;
+          document.documentElement.dataset.cityTheme = city;
+          document.documentElement.style.colorScheme = theme;
+        } catch (error) {
+          document.documentElement.classList.add("gemplex-theme-preload");
+          document.documentElement.dataset.theme = "dark";
+          document.documentElement.dataset.cityTheme = "all";
+        }
+      })();
+    </script>
+    <script src="js/theme.js?v=4"></script>
+    <link rel="stylesheet" href="css/styles.css?v=116">
+  </head>
+  <body class="ott-flow-page auth-page">
+    <header class="flow-topbar">
+      <a class="brand" href="javascript:void(0)" aria-label="Gemplex">
+        <img class="brand-logo" src="assets/gemplex-logo-teal.png?v=3" alt="Gemplex">
+      </a>
+      <a class="flow-link" href="login.html">Login</a>
+    </header>
+
+    <main class="auth-shell">
+      <section class="auth-card">
+        <span class="eyebrow">Create your Gemplex account</span>
+        <h1>Finish Signup</h1>
+        <p>Create your account from the secure email link. After this, your mobile number can use OTP login.</p>
+
+        <form id="createAccountForm">
+          <label>
+            <span>Your name</span>
+            <input id="nameInput" type="text" placeholder="Enter your name" autocomplete="name" required>
+          </label>
+          <button class="primary-btn" type="submit">Create Account</button>
+        </form>
+
+        <p class="auth-note" id="authMessage" aria-live="polite"></p>
+      </section>
+    </main>
+
+    <script src="js/auth-client.js"></script>
+    <script src="js/create-account.js"></script>
+  </body>
+</html>

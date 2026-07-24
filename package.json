@@ -1,0 +1,13 @@
+{
+  "name": "gemplex-website",
+  "version": "1.0.0",
+  "description": "Gemplex frontend with a CMS API that supports MySQL and a local JSON fallback.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "optionalDependencies": {
+    "mysql2": "^3.11.5"
+  }
+}

@@ -1,0 +1,7 @@
+.env
+data/*.json
+Gemplex-Website/.env
+Gemplex-Website/data/*.json
+*.log
+uploads-contact-sheet*.png
+node_modules/

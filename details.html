@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gemplex | Details</title>
+    <script>
+      (function(){
+        try {
+          if ("scrollRestoration" in history) {
+            history.scrollRestoration = "manual";
+          }
+          var navigation = performance.getEntriesByType && performance.getEntriesByType("navigation")[0];
+          var isReload = navigation ? navigation.type === "reload" : performance.navigation && performance.navigation.type === 1;
+          if (!isReload) {
+            return;
+          }
+          if (window.location.hash) {
+            history.replaceState(null, document.title, window.location.pathname + window.location.search);
+          }
+          var keepHeroInView = function(){
+            window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+          };
+          keepHeroInView();
+          window.requestAnimationFrame(keepHeroInView);
+          window.addEventListener("pageshow", keepHeroInView, { once: true });
+          window.addEventListener("load", function(){
+            keepHeroInView();
+            window.setTimeout(keepHeroInView, 80);
+            window.setTimeout(keepHeroInView, 260);
+            window.setTimeout(keepHeroInView, 620);
+          }, { once: true });
+        } catch (error) {}
+      })();
+    </script>
+    <script>
+      (function(){
+        try {
+          var selectedTitle = JSON.parse(sessionStorage.getItem("gemplex-selected-title") || "null");
+          var poster = selectedTitle && selectedTitle.upload && selectedTitle.upload.thumbnail
+            ? selectedTitle.upload.thumbnail
+            : selectedTitle && selectedTitle.poster;
+          if (poster) {
+            document.documentElement.style.setProperty("--preload-details-bg", 'url("' + poster.replace(/"/g, "%22") + '")');
+          }
+          if (selectedTitle && selectedTitle.upload && selectedTitle.upload.thumbnail) {
+            document.documentElement.classList.add("details-uploaded-preload");
+          }
+        } catch (error) {}
+      })();
+    </script>
+    <script>
+      (function(){
+        try {
+          var theme = localStorage.getItem("gemplex-theme");
+          if (theme !== "light" && theme !== "dark") {
+            theme = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+          }
+          var city = localStorage.getItem("gemplex-selected-city") || "all";
+          document.documentElement.classList.add("gemplex-theme-preload");
+          document.documentElement.dataset.theme = theme;
+          document.documentElement.dataset.cityTheme = city;
+          document.documentElement.style.colorScheme = theme;
+        } catch (error) {
+          document.documentElement.classList.add("gemplex-theme-preload");
+          document.documentElement.dataset.theme = "dark";
+          document.documentElement.dataset.cityTheme = "all";
+        }
+      })();
+    </script>
+    <script>
+      (function(){
+        try {
+          var theme = localStorage.getItem("gemplex-theme");
+          if (theme !== "light" && theme !== "dark") {
+            theme = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+          }
+          var city = localStorage.getItem("gemplex-selected-city") || "all";
+          document.documentElement.classList.add("gemplex-theme-preload");
+          document.documentElement.dataset.theme = theme;
+          document.documentElement.dataset.cityTheme = city;
+          document.documentElement.style.colorScheme = theme;
+        } catch (error) {
+          document.documentElement.classList.add("gemplex-theme-preload");
+          document.documentElement.dataset.theme = "dark";
+          document.documentElement.dataset.cityTheme = "all";
+        }
+      })();
+    </script>
+    <script src="js/theme.js?v=4"></script>
+    <link rel="stylesheet" href="css/styles.css?v=193">
+  </head>
+  <body class="ott-flow-page">
+    <header class="details-topnav">
+      <a class="details-nav-logo" href="javascript:void(0)" aria-label="Gemplex">
+        <img class="brand-logo" src="assets/gemplex-logo-teal.png?v=3" alt="Gemplex">
+      </a>
+      <nav aria-label="Gemplex detail navigation">
+        <a href="index.html">Home</a>
+        <a href="index.html#city-network">Movies</a>
+        <a href="index.html#city-network">TV Shows</a>
+        <a href="index.html#events">Live TV</a>
+        <a href="index.html#launch-plan">Subscription</a>
+      </nav>
+      <div class="details-nav-actions">
+        <button type="button" aria-label="Search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m16.5 16.5 4 4"></path></svg>
+        </button>
+        <button type="button">EN</button>
+        <button type="button" aria-label="Apps">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h3v3H4zM10.5 4h3v3h-3zM17 4h3v3h-3zM4 10.5h3v3H4zM10.5 10.5h3v3h-3zM17 10.5h3v3h-3zM4 17h3v3H4zM10.5 17h3v3h-3zM17 17h3v3h-3z"></path></svg>
+        </button>
+        <button class="join-prime-button" id="topSubscribeButton" type="button">Join Gemplex</button>
+      </div>
+    </header>
+
+    <main class="details-shell">
+      <section class="details-hero" id="detailsHero">
+        <!-- <a class="details-brand" href="index.html" aria-label="Gemplex home">
+          <img class="brand-logo" src="assets/gemplex-logo-teal.png?v=3" alt="Gemplex">
+        </a> -->
+
+        <div class="details-title-block">
+          <span class="eyebrow" id="detailsType">Gemplex Premium</span>
+          <h1 id="detailsTitle">Gemplex Title</h1>
+        </div>
+
+        <div class="details-watch-panel">
+          <div class="details-icon-row" aria-label="Title actions">
+            <button type="button" aria-label="Add to list" aria-pressed="false" data-details-action="list">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+            </button>
+            <button type="button" aria-label="Like" aria-pressed="false" data-details-action="like">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path><path d="M7 11l5-8 1 1c.8.8 1.1 2 .7 3.1L13 10h7.2a2 2 0 0 1 1.9 2.6l-2 7A3 3 0 0 1 17.2 22H7Z"></path></svg>
+            </button>
+            <button type="button" aria-label="Dislike" aria-pressed="false" data-details-action="dislike">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 2h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"></path><path d="M17 13l-5 8-1-1c-.8-.8-1.1-2-.7-3.1L11 14H3.8a2 2 0 0 1-1.9-2.6l2-7A3 3 0 0 1 6.8 2H17Z"></path></svg>
+            </button>
+            <button type="button" aria-label="Share" data-details-action="share">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="m8.6 10.8 6.8-4.6"></path><path d="m8.6 13.2 6.8 4.6"></path></svg>
+            </button>
+          </div>
+
+          <button class="details-play-button" id="subscribeButton" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3v18l13-9Z"></path></svg>
+            <span>Subscribe to Watch</span>
+          </button>
+          <button class="details-play-button" id="playButton" type="button" hidden>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3v18l13-9Z"></path></svg>
+            <span>Play</span>
+          </button>
+
+          <a class="details-provider" id="downloadAppButton" href="app-download.html">
+            <span></span>
+            Gemplex App
+          </a>
+        </div>
+
+        <div class="details-copy">
+          <p id="detailsMeta">City-first entertainment, creator stories, and premium OTT playback.</p>
+          <div class="details-facts">
+            <a href="#">Drama</a>
+            <a href="#">City Original</a>
+            <span>IMDb 8.2/10</span>
+            <span>2026</span>
+            <span>1 h 44 min</span>
+          </div>
+          <div class="details-cast">
+            <strong>Cast:</strong>
+            <span>Gemplex Creators, Local Artists, City Studios</span>
+          </div>
+          <div class="details-rating-row">
+            <span>U/A 16+</span>
+            <span>HD</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="details-below">
+        <div class="details-tabs" role="tablist" aria-label="Details sections">
+          <button class="is-active" type="button" data-details-tab="related" aria-selected="true">Related</button>
+          <button type="button" data-details-tab="details" aria-selected="false">Details</button>
+        </div>
+
+        <section class="related-section" aria-labelledby="relatedTitle" data-details-panel="related">
+          <h2 id="relatedTitle">Customers also watched</h2>
+          <div class="related-strip">
+            <article role="button" tabindex="0" data-related-id="river-of-stories" data-related-title="River of Stories" data-related-city="surat" data-related-city-label="Surat" data-related-poster="assets/wide-river.svg?v=19" data-related-meta="Short films and city stories from local creators">
+              <img src="assets/wide-river.svg?v=19" alt="">
+              <strong>River of Stories</strong>
+            </article>
+            <article role="button" tabindex="0" data-related-id="city-challenge" data-related-title="City Challenge" data-related-city="jaipur" data-related-city-label="Jaipur" data-related-poster="assets/wide-kitchen.svg?v=20" data-related-meta="Creator battles, local pride, and weekly city challenges">
+              <img src="assets/wide-kitchen.svg?v=20" alt="">
+              <strong>City Challenge</strong>
+            </article>
+            <article role="button" tabindex="0" data-related-id="ai-night-files" data-related-title="AI Night Files" data-related-city="delhi" data-related-city-label="Delhi" data-related-poster="assets/player-preview.svg" data-related-meta="AI shorts, futuristic stories, and experimental creator videos">
+              <img src="assets/player-preview.svg" alt="">
+              <strong>AI Night Files</strong>
+            </article>
+            <article role="button" tabindex="0" data-related-id="orbit-diaries" data-related-title="Orbit Diaries" data-related-city="indore" data-related-city-label="Indore" data-related-poster="assets/wide-orbit.svg?v=18" data-related-meta="Trending creator stories, emotional shorts, and city charts">
+              <img src="assets/wide-orbit.svg?v=18" alt="">
+              <strong>Orbit Diaries</strong>
+            </article>
+          </div>
+        </section>
+
+        <section class="details-info-grid" aria-label="Title details" data-details-panel="details" hidden>
+          <article class="details-info-card details-main-card">
+            <h2 id="detailsInfoTitle">Gemplex Title</h2>
+            <div class="details-facts compact">
+              <a href="#">Drama</a>
+              <a href="#">City Original</a>
+              <span>IMDb 8.2/10</span>
+              <span>2026</span>
+              <span>1 h 44 min</span>
+            </div>
+            <p id="detailsInfoBody">A city-first Gemplex story made for premium OTT viewing.</p>
+            <a href="#">More</a>
+          </article>
+
+          <article class="details-info-card">
+            <h2>Content advisory</h2>
+            <span class="rating-pill">U/A 16+</span>
+            <p>violence, alcohol use, tobacco depictions, frightening scenes</p>
+          </article>
+
+          <article class="details-info-card details-main-card">
+            <h2>Creators and Cast</h2>
+            <dl>
+              <div><dt>Directors</dt><dd><a href="#">Gemplex Studios</a></dd></div>
+              <div><dt>Producers</dt><dd><a href="#">City Originals Team</a>, <a href="#">Gemplex Network</a></dd></div>
+              <div><dt>Cast</dt><dd><a href="#">Gemplex Creators</a>, <a href="#">Local Artists</a>, <a href="#">City Studios</a></dd></div>
+              <div><dt>Studio</dt><dd>Gemplex</dd></div>
+            </dl>
+          </article>
+
+          <div class="details-side-stack">
+            <article class="details-info-card">
+              <h2>Audio languages</h2>
+              <p>Hindi</p>
+            </article>
+            <article class="details-info-card">
+              <h2>Subtitles</h2>
+              <p>English</p>
+            </article>
+          </div>
+        </section>
+
+        <p class="terms-line" data-details-panel="details" hidden>By clicking play, you agree to our <a href="#">Terms of Use</a>.</p>
+
+        <section class="feedback-section" data-details-panel="details" hidden>
+          <h2>Feedback</h2>
+          <button type="button">Send us feedback</button>
+        </section>
+
+        <section class="support-section" data-details-panel="details" hidden>
+          <h2>Support</h2>
+          <a href="#">Get Help</a>
+        </section>
+      </section>
+    </main>
+
+    <footer class="details-footer">
+      <img class="brand-logo" src="assets/gemplex-logo-teal.png?v=3" alt="Gemplex">
+      <div>
+        <a href="#">Terms and Privacy Notice</a>
+        <a href="#">Send us feedback</a>
+        <a href="#">Help</a>
+        <span>© 2026 Gemplex</span>
+      </div>
+    </footer>
+
+    <script src="js/text-utils.js?v=2"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+    <script src="js/firebase-config.js?v=1"></script>
+    <script src="js/firebase-auth.js?v=7"></script>
+    <script src="js/auth-client.js?v=17"></script>
+    <script src="js/details.js?v=38"></script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

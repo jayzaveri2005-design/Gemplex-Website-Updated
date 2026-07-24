@@ -1,0 +1,1309 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gemplex Admin | City Entertainment</title>
+
+    <script>
+      (function(){
+        try {
+          var theme = localStorage.getItem("gemplex-theme");
+          if (theme !== "light" && theme !== "dark") {
+            theme = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+          }
+          var city = localStorage.getItem("gemplex-selected-city") || "all";
+          document.documentElement.classList.add("gemplex-theme-preload");
+          document.documentElement.dataset.theme = theme;
+          document.documentElement.dataset.cityTheme = city;
+          document.documentElement.style.colorScheme = theme;
+        } catch (error) {
+          var fallbackTheme = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+          document.documentElement.classList.add("gemplex-theme-preload");
+          document.documentElement.dataset.theme = fallbackTheme;
+          document.documentElement.dataset.cityTheme = "all";
+          document.documentElement.style.colorScheme = fallbackTheme;
+        }
+      })();
+    </script>
+    <script src="js/theme.js?v=5"></script>
+    <link rel="stylesheet" href="css/styles.css?v=186">
+  </head>
+  <body class="admin-page admin-checking">
+    <section class="admin-lock" aria-labelledby="adminLockTitle">
+      <div class="admin-lock-card">
+        <a class="admin-lock-brand" href="javascript:void(0)" aria-label="Gemplex">
+          <img src="assets/gemplex-logo-teal.png?v=3" alt="Gemplex">
+        </a>
+        <h1 id="adminLockTitle">Login</h1>
+        <form id="adminLockForm" class="admin-lock-form">
+          <label>
+            Admin email
+            <input id="adminEmail" type="email" autocomplete="username" placeholder="jayzaveri2005@gmail.com" required>
+          </label>
+          <label>
+            Admin password
+            <input id="adminPassword" type="password" autocomplete="current-password" placeholder="Enter admin password" required>
+          </label>
+          <button class="primary-btn" type="submit">Login as Admin</button>
+        </form>
+        <p class="admin-lock-note" id="adminLockNote"></p>
+      </div>
+    </section>
+
+    <header class="topbar" aria-label="Admin navigation">
+      <a class="brand" href="javascript:void(0)" aria-label="Gemplex">
+        <img class="brand-logo" src="assets/gemplex-logo-teal.png?v=3" alt="Gemplex">
+      </a>
+
+      <div class="top-actions">
+        <label class="search" aria-label="Search admin sections">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m16.5 16.5 4 4"></path>
+          </svg>
+          <input id="searchInput" type="search" placeholder="Search sections" autocomplete="off" aria-controls="searchResults" aria-expanded="false">
+        </label>
+        <div class="search-results" id="searchResults" aria-live="polite"></div>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light mode" aria-pressed="false">
+          <span class="theme-track" aria-hidden="true">
+            <span class="theme-knob">
+              <svg class="moon-icon" viewBox="0 0 24 24">
+                <path d="M20 15.2A8 8 0 0 1 8.8 4 7.1 7.1 0 1 0 20 15.2z"></path>
+              </svg>
+              <svg class="sun-icon" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="4"></circle>
+                <path d="M12 2v2"></path>
+                <path d="M12 20v2"></path>
+                <path d="m4.93 4.93 1.41 1.41"></path>
+                <path d="m17.66 17.66 1.41 1.41"></path>
+                <path d="M2 12h2"></path>
+                <path d="M20 12h2"></path>
+                <path d="m6.34 17.66-1.41 1.41"></path>
+                <path d="m19.07 4.93-1.41 1.41"></path>
+              </svg>
+            </span>
+          </span>
+        </button>
+        <button class="profile" id="adminLogoutButton" type="button" aria-label="Logout admin">
+          <span id="adminLockName">Admin</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="admin-shell">
+      <aside class="admin-sidebar" aria-label="Admin sidebar">
+        <a class="admin-sidebar-logo" href="index.html" aria-label="Gemplex website">
+          <img src="assets/gemplex-logo-teal.png?v=3" alt="Gemplex">
+          <span>OTT Management</span>
+        </a>
+
+        <div class="admin-sidebar-card">
+          <span class="admin-sidebar-kicker">Gemplex CMS</span>
+          <strong>Website control room</strong>
+          <p>Manage city stories, uploads, previews, and subscriber flow.</p>
+        </div>
+
+        <nav class="admin-side-nav" aria-label="Admin workspace">
+          <a class="is-active" href="#admin-dashboard" title="Dashboard">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13h7V4H4z"></path><path d="M13 20h7V4h-7z"></path><path d="M4 20h7v-5H4z"></path></svg>
+            <span>Dashboard</span>
+          </a>
+          <a href="#admin-panel" title="CMS Controls">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16"></path><path d="M4 12h10"></path><path d="M4 19h16"></path><path d="M18 9v6"></path><path d="M15 12h6"></path></svg>
+            <span>CMS Controls</span>
+          </a>
+          <a href="#city-manager" title="City Manager">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-5.3 7-12a7 7 0 1 0-14 0c0 6.7 7 12 7 12z"></path><path d="M12 11.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"></path></svg>
+            <span>City Manager</span>
+          </a>
+          <a href="#creator-uploads" title="Creator Uploads">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17V7a2 2 0 0 1 2-2h8l6 6v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"></path><path d="M14 5v6h6"></path><path d="m9 15 2-2 2 2"></path></svg>
+            <span>Creator Uploads</span>
+          </a>
+          <a href="#file-manager" title="File Manager">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><path d="M3 11h18"></path></svg>
+            <span>File Manager</span>
+          </a>
+          <a href="#city-preview" title="City Preview">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18"></path><path d="M5 20V8l5-4 5 4v12"></path><path d="M15 11h4v9"></path><path d="M8 12h2"></path><path d="M8 16h2"></path></svg>
+            <span>City Preview</span>
+          </a>
+        </nav>
+
+        <div class="admin-side-group">
+          <span>Website Links</span>
+          <a href="index.html" title="User Website">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 12 4l9 7"></path><path d="M5 10v10h14V10"></path></svg>
+            <span>User Website</span>
+          </a>
+          <a href="details.html" title="Details Page">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v16H5z"></path><path d="m10 9 5 3-5 3z"></path></svg>
+            <span>Details Page</span>
+          </a>
+          <a href="login.html" title="Login Flow">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path><path d="M4 21a8 8 0 0 1 16 0"></path></svg>
+            <span>Login Flow</span>
+          </a>
+        </div>
+
+        <div class="admin-sidebar-footer">
+          <span>Publishing status</span>
+          <strong>Live ready</strong>
+        </div>
+      </aside>
+
+      <main class="admin-main">
+      <section class="rail admin-dashboard admin-view" id="admin-dashboard" aria-labelledby="adminHeroTitle">
+        <div class="admin-dashboard-top">
+          <div>
+            <span class="eyebrow">OTT Command Center</span>
+            <h1 id="adminHeroTitle">Good morning, Gemplex editor</h1>
+            <p>Track content publishing, creator uploads, city performance, subscribers, and playback readiness from one clean console.</p>
+          </div>
+          <div class="admin-plan-card">
+            <span>Platform status</span>
+            <strong>Gemplex Pro Ops</strong>
+            <a href="#admin-panel" data-admin-view-link="admin-panel">Open CMS</a>
+          </div>
+        </div>
+
+        <div class="ott-stat-grid" aria-label="Gemplex admin summary">
+          <article>
+            <span class="stat-icon teal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 4 10 8-10 8z"></path></svg></span>
+            <div>
+              <small>Published Titles</small>
+              <strong>42</strong>
+              <em class="up">+12% this week</em>
+            </div>
+          </article>
+          <article>
+            <span class="stat-icon blue"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v12H4z"></path><path d="m10 9 5 3-5 3z"></path></svg></span>
+            <div>
+              <small>Watch Minutes</small>
+              <strong>1.9M</strong>
+              <em class="up">+18.5% vs last week</em>
+            </div>
+          </article>
+          <article>
+            <span class="stat-icon amber"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18"></path><path d="M17 6H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6"></path></svg></span>
+            <div>
+              <small>Revenue</small>
+              <strong>₹1,90,000</strong>
+              <em class="up">+14.2% this month</em>
+            </div>
+          </article>
+          <article>
+            <span class="stat-icon violet"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-8 0v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span>
+            <div>
+              <small>Subscribers</small>
+              <strong>8,420</strong>
+              <em class="up">+9.1% growth</em>
+            </div>
+          </article>
+          <article>
+            <span class="stat-icon rose"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 9v4"></path><path d="M12 17h.01"></path><path d="M10.3 3.9 2.6 17a2 2 0 0 0 1.7 3h15.4a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path></svg></span>
+            <div>
+              <small>Pending Reviews</small>
+              <strong>7</strong>
+              <em class="down">Needs approval</em>
+            </div>
+          </article>
+        </div>
+
+        <div class="ott-dashboard-grid">
+          <article class="ott-card chart-card">
+            <div class="ott-card-head">
+              <div>
+                <span>Streaming Analytics</span>
+                <h2>Total watch time</h2>
+              </div>
+              <button type="button">This Month</button>
+            </div>
+            <strong>1,900,000 min <em>+18.5%</em></strong>
+            <div class="sparkline blue-line" aria-hidden="true"></div>
+          </article>
+
+          <article class="ott-card chart-card">
+            <div class="ott-card-head">
+              <div>
+                <span>Subscriptions</span>
+                <h2>Monthly revenue</h2>
+              </div>
+              <button type="button">Live</button>
+            </div>
+            <strong>₹1,90,000 <em>+14.2%</em></strong>
+            <div class="sparkline green-line" aria-hidden="true"></div>
+          </article>
+
+          <article class="ott-card notifications-card">
+            <div class="ott-card-head">
+              <div>
+                <span>Alerts</span>
+                <h2>Notifications</h2>
+              </div>
+              <button type="button">View All</button>
+            </div>
+            <ul>
+              <li><b>3 uploads</b><span>Waiting for thumbnail approval</span></li>
+              <li><b>Patna Rising</b><span>Video and thumbnail are live</span></li>
+              <li><b>2 subscribers</b><span>OTP login failed twice</span></li>
+              <li><b>Music rail</b><span>Needs one more featured title</span></li>
+            </ul>
+          </article>
+
+          <article class="ott-card content-table">
+            <div class="ott-card-head">
+              <div>
+                <span>Content Queue</span>
+                <h2>Top city titles</h2>
+              </div>
+              <a href="#creator-uploads" data-admin-view-link="creator-uploads">Manage</a>
+            </div>
+            <div class="content-row"><span>1</span><strong>Patna Rising</strong><em>Published</em><b>Patna</b></div>
+            <div class="content-row"><span>2</span><strong>Mumbai Movie Premieres</strong><em>Ready</em><b>Mumbai</b></div>
+            <div class="content-row"><span>3</span><strong>Indore Trending</strong><em>Draft</em><b>Indore</b></div>
+            <div class="content-row"><span>4</span><strong>Local Music</strong><em>Review</em><b>All cities</b></div>
+          </article>
+
+          <article class="ott-card city-donut">
+            <div class="ott-card-head">
+              <div>
+                <span>City Split</span>
+                <h2>Audience overview</h2>
+              </div>
+            </div>
+            <div class="donut-wrap">
+              <div class="donut-chart"><strong>42%</strong><span>Mumbai</span></div>
+              <div class="donut-list">
+                <span><i></i>Mumbai <b>42%</b></span>
+                <span><i></i>Patna <b>27%</b></span>
+                <span><i></i>Indore <b>18%</b></span>
+                <span><i></i>Others <b>13%</b></span>
+              </div>
+            </div>
+          </article>
+
+          <article class="ott-card quick-actions-card">
+            <div class="ott-card-head">
+              <div>
+                <span>Quick Actions</span>
+                <h2>Run Gemplex</h2>
+              </div>
+            </div>
+            <a href="#admin-panel" data-admin-view-link="admin-panel">Edit website content</a>
+            <a href="#city-manager" data-admin-view-link="city-manager">Manage city dropdown</a>
+            <a href="#creator-uploads" data-admin-view-link="creator-uploads">Review creator uploads</a>
+            <a href="#file-manager" data-admin-view-link="file-manager">Manage backend files</a>
+            <a href="#city-preview" data-admin-view-link="city-preview">Preview city rails</a>
+            <a href="login.html">Test subscriber login</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="rail admin-view" id="admin-panel" aria-labelledby="adminTitle" hidden>
+        <section class="admin-panel">
+          <div class="admin-head">
+            <div>
+              <span class="eyebrow">Admin Panel</span>
+              <h2 id="adminTitle">CMS workspace</h2>
+              <p>Update content on the left, review the selected module on the right, then save to publish.</p>
+            </div>
+            <span class="admin-status" id="adminStatus">React + Vue CMS active</span>
+          </div>
+
+          <div class="admin-layout">
+            <div id="reactAdminApp"></div>
+            <div id="vueAdminPreview"></div>
+          </div>
+        </section>
+      </section>
+
+      <section class="rail admin-view city-manager-view" id="city-manager" aria-labelledby="cityManagerTitle" hidden>
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Frontend Dropdown</span>
+            <h2 id="cityManagerTitle">City Manager</h2>
+            <p class="admin-section-note">Add, update, hide, and delete the cities shown in the frontend city selector.</p>
+          </div>
+          <div class="file-manager-actions">
+            <button class="secondary-btn" type="button" id="cityManagerNew">New City</button>
+            <button class="primary-btn" type="button" id="cityManagerSave">Save Cities</button>
+          </div>
+        </div>
+
+        <div class="city-manager-layout">
+          <div class="city-manager-list" id="cityManagerList" aria-label="Cities"></div>
+          <form class="city-manager-form" id="cityManagerForm">
+            <label>
+              City ID
+              <input id="cityManagerId" type="text" placeholder="mumbai" required>
+            </label>
+            <label>
+              City Name
+              <input id="cityManagerName" type="text" placeholder="Mumbai" required>
+            </label>
+            <label class="field-full">
+              City Description
+              <textarea id="cityManagerMeta" rows="4" placeholder="Movies, music, creators, and local stories"></textarea>
+            </label>
+            <div class="city-manager-actions field-full">
+              <button class="danger-btn" type="button" id="cityManagerDelete">Delete City</button>
+            </div>
+            <p class="file-manager-status field-full" id="cityManagerStatus">Select a city to edit.</p>
+          </form>
+        </div>
+      </section>
+
+      <section class="rail admin-view" id="creator-uploads" aria-labelledby="uploadsTitle" hidden>
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Gemplex Uploads</span>
+            <h2 id="uploadsTitle">Fresh from creators</h2>
+            <p class="admin-section-note">Published uploads from the CMS appear here so editors can quickly verify thumbnail, title, and playback state.</p>
+          </div>
+        </div>
+        <div class="upload-grid" id="uploadGrid" aria-live="polite"></div>
+      </section>
+
+      <section class="rail admin-view file-manager-view" id="file-manager" aria-labelledby="fileManagerTitle" hidden>
+        <div class="section-head file-manager-head">
+          <div>
+            <span class="eyebrow">Backend Storage</span>
+            <h2 id="fileManagerTitle">File Manager</h2>
+            <p class="admin-section-note">Browse website folders, upload thumbnails or videos, copy public URLs, and remove unused files from one clean admin workspace.</p>
+          </div>
+          <div class="file-manager-actions">
+            <button class="secondary-btn" type="button" id="fileManagerBack">Back</button>
+            <form class="file-manager-search" id="fileManagerSearchForm" role="search">
+              <input id="fileManagerSearch" type="search" placeholder="Search uploads" autocomplete="off" aria-label="Search uploaded files" hidden>
+              <button class="secondary-btn" type="submit">Search</button>
+            </form>
+            <label class="primary-btn file-manager-upload">
+              Upload files
+              <input id="fileManagerUpload" type="file" multiple>
+            </label>
+          </div>
+        </div>
+
+        <div class="file-manager-toolbar">
+          <label>
+            Storage
+            <select id="fileManagerRoot" aria-label="Select file storage folder">
+              <option value="uploads">Uploads</option>
+              <option value="storage">Laravel Storage</option>
+              <option value="assets">Assets</option>
+              <option value="data">Data</option>
+              <option value="css">CSS</option>
+              <option value="js">JavaScript</option>
+            </select>
+          </label>
+          <div class="file-manager-path" id="fileManagerPath">uploads /</div>
+        </div>
+
+        <div class="file-manager-status" id="fileManagerStatus">Loading files...</div>
+        <div class="file-manager-grid" id="fileManagerGrid" aria-live="polite"></div>
+      </section>
+
+      <section class="rail admin-view" id="city-preview" aria-labelledby="previewTitle" hidden>
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Website Preview</span>
+            <h2 id="previewTitle">City Entertainment Network</h2>
+            <p class="admin-section-note">A compact public-site preview for checking category visibility before opening the full website.</p>
+          </div>
+          <div class="tabs" role="tablist" aria-label="Admin preview content category">
+            <button class="tab is-active" type="button" data-filter="all">All</button>
+            <button class="tab" type="button" data-filter="city">Cities</button>
+            <button class="tab" type="button" data-filter="creator">Creators</button>
+            <button class="tab" type="button" data-filter="shorts">Shorts</button>
+            <button class="tab" type="button" data-filter="devotional">Devotional</button>
+            <button class="tab" type="button" data-filter="music">Music</button>
+          </div>
+        </div>
+
+        <div class="poster-grid" id="posterGrid" aria-live="polite"></div>
+      </section>
+      </main>
+    </div>
+
+    <script src="js/text-utils.js?v=2"></script>
+    <script src="js/admin-auth.js?v=4"></script>
+    <script src="js/content-store.js?v=8"></script>
+    <script>
+      const adminViews = document.querySelectorAll(".admin-view");
+      const adminViewLinks = document.querySelectorAll(".admin-side-nav a, [data-admin-view-link]");
+
+      function showAdminView(viewId) {
+        adminViews.forEach((view) => {
+          view.hidden = view.id !== viewId;
+        });
+
+        document.querySelectorAll(".admin-side-nav a").forEach((item) => {
+          item.classList.toggle("is-active", item.getAttribute("href") === `#${viewId}`);
+        });
+
+        document.querySelector(".admin-main")?.scrollTo({ top: 0, behavior: "auto" });
+        window.scrollTo({ top: 0, behavior: "auto" });
+        window.dispatchEvent(new CustomEvent("gemplex-admin-view", { detail: { viewId } }));
+      }
+
+      window.GemplexAdmin = { showAdminView };
+
+      function syncAdminHashView() {
+        const hashView = window.location.hash.replace("#", "");
+        if (hashView && document.getElementById(hashView)?.classList.contains("admin-view")) {
+          showAdminView(hashView);
+        }
+      }
+
+      adminViewLinks.forEach((link) => {
+        link.addEventListener("click", (event) => {
+          const viewId = link.dataset.adminViewLink || link.getAttribute("href")?.replace("#", "");
+          if (!viewId || !document.getElementById(viewId)) {
+            return;
+          }
+
+          event.preventDefault();
+          showAdminView(viewId);
+          history.replaceState(null, "", `#${viewId}`);
+        });
+      });
+
+      syncAdminHashView();
+      window.addEventListener("load", syncAdminHashView);
+      window.addEventListener("hashchange", syncAdminHashView);
+
+      const cityManagerState = { content: null, selectedId: "" };
+      const cityManagerList = document.getElementById("cityManagerList");
+      const cityManagerId = document.getElementById("cityManagerId");
+      const cityManagerName = document.getElementById("cityManagerName");
+      const cityManagerMeta = document.getElementById("cityManagerMeta");
+      const cityManagerStatus = document.getElementById("cityManagerStatus");
+
+      function slugifyCityId(value) {
+        return String(value || "city")
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "")
+          .slice(0, 40) || `city-${Date.now()}`;
+      }
+
+      function getCityItems() {
+        cityManagerState.content.cities ||= { eyebrow: "City Controls", title: "Manage Gemplex cities", items: [] };
+        cityManagerState.content.cities.items ||= [];
+        return cityManagerState.content.cities.items;
+      }
+
+      function setCityManagerStatus(message, tone = "") {
+        if (!cityManagerStatus) return;
+        cityManagerStatus.textContent = message;
+        cityManagerStatus.dataset.tone = tone;
+      }
+
+      function selectManagedCity(cityId) {
+        const city = getCityItems().find((item) => item.id === cityId) || getCityItems()[0];
+        cityManagerState.selectedId = city?.id || "";
+        cityManagerId.value = city?.id || "";
+        cityManagerName.value = city?.name || "";
+        cityManagerMeta.value = city?.meta || "";
+        renderCityManagerList();
+      }
+
+      function renderCityManagerList() {
+        if (!cityManagerList || !cityManagerState.content) return;
+        const cities = getCityItems();
+        cityManagerList.textContent = "";
+        if (!cities.length) {
+          const empty = document.createElement("p");
+          empty.className = "admin-preview-empty";
+          empty.textContent = "No cities yet. Add one city to begin.";
+          cityManagerList.append(empty);
+          return;
+        }
+
+        cities.forEach((city) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = city.id === cityManagerState.selectedId ? "city-manager-item is-active" : "city-manager-item";
+          button.innerHTML = `<strong>${escapeAdminText(city.name)}</strong><span>${escapeAdminText(city.id)} - ${city.visible === false ? "Hidden" : "Visible"}</span>`;
+          button.addEventListener("click", () => selectManagedCity(city.id));
+          cityManagerList.append(button);
+        });
+      }
+
+      function readCityForm() {
+        return {
+          id: slugifyCityId(cityManagerId.value),
+          name: cityManagerName.value.trim() || "New City",
+          meta: cityManagerMeta.value.trim() || "Local movies, creators, music, and city stories",
+          visible: true
+        };
+      }
+
+      async function saveCityManagerContent(message = "Cities saved.") {
+        const cms = window.GemplexCMS;
+        if (!cms || !cityManagerState.content) return;
+        try {
+          const saved = await cms.saveContentToBackend(cityManagerState.content);
+          cityManagerState.content = saved;
+          window.dispatchEvent(new CustomEvent("gemplex-content-updated", { detail: { content: saved } }));
+          setCityManagerStatus(message, "success");
+        } catch (error) {
+          cms.saveContent(cityManagerState.content);
+          window.dispatchEvent(new CustomEvent("gemplex-content-updated", { detail: { content: cityManagerState.content } }));
+          setCityManagerStatus(`${message} Saved locally.`, "success");
+        }
+      }
+
+      async function loadCityManager() {
+        const cms = window.GemplexCMS;
+        if (!cms) return;
+        cityManagerState.content = await cms.loadContentFromBackend().catch(() => cms.loadContent());
+        if (!cityManagerState.content.cities?.items?.length) {
+          cityManagerState.content.cities = cms.clone(cms.defaultContent.cities);
+        }
+        selectManagedCity(cityManagerState.selectedId || cityManagerState.content.cities.items[0]?.id || "");
+        setCityManagerStatus("Cities loaded.", "success");
+      }
+
+      document.getElementById("cityManagerNew")?.addEventListener("click", () => {
+        if (!cityManagerState.content) return;
+        const cities = getCityItems();
+        let id = "new-city";
+        let count = 2;
+        while (cities.some((city) => city.id === id)) {
+          id = `new-city-${count}`;
+          count += 1;
+        }
+        cities.push({ id, name: "New City", meta: "Local movies, creators, music, and city stories", visible: true });
+        selectManagedCity(id);
+        setCityManagerStatus("New city added. Edit it and save.", "success");
+      });
+
+      document.getElementById("cityManagerSave")?.addEventListener("click", async () => {
+        if (!cityManagerState.content) return;
+        const nextCity = readCityForm();
+        const cities = getCityItems();
+        const existingIndex = cities.findIndex((city) => city.id === cityManagerState.selectedId);
+        const duplicate = cities.some((city, index) => city.id === nextCity.id && index !== existingIndex);
+        if (duplicate) {
+          setCityManagerStatus("City ID already exists. Use a unique ID.", "danger");
+          return;
+        }
+        if (existingIndex >= 0) {
+          cities[existingIndex] = nextCity;
+        } else {
+          cities.push(nextCity);
+        }
+        cityManagerState.selectedId = nextCity.id;
+        renderCityManagerList();
+        await saveCityManagerContent("Cities saved to frontend dropdown.");
+      });
+
+      document.getElementById("cityManagerDelete")?.addEventListener("click", async () => {
+        if (!cityManagerState.content || !cityManagerState.selectedId) return;
+        const city = getCityItems().find((item) => item.id === cityManagerState.selectedId);
+        if (!city || !confirm(`Delete ${city.name} from frontend city dropdown?`)) return;
+        cityManagerState.content.cities.items = getCityItems().filter((item) => item.id !== cityManagerState.selectedId);
+        cityManagerState.selectedId = cityManagerState.content.cities.items[0]?.id || "";
+        selectManagedCity(cityManagerState.selectedId);
+        await saveCityManagerContent("City deleted from frontend dropdown.");
+      });
+
+      let cityManagerLoaded = false;
+      function ensureCityManagerLoaded() {
+        if (cityManagerLoaded) return;
+        cityManagerLoaded = true;
+        loadCityManager().catch((error) => setCityManagerStatus(error.message, "danger"));
+      }
+
+      window.addEventListener("gemplex-admin-view", (event) => {
+        if (event.detail?.viewId === "city-manager") {
+          ensureCityManagerLoaded();
+        }
+      });
+
+      if (window.location.hash === "#city-manager") {
+        ensureCityManagerLoaded();
+      }
+
+      const fileManagerState = { root: "uploads", path: "", entries: [], query: "" };
+      const fileManagerRoot = document.getElementById("fileManagerRoot");
+      const fileManagerGrid = document.getElementById("fileManagerGrid");
+      const fileManagerStatus = document.getElementById("fileManagerStatus");
+      const fileManagerPath = document.getElementById("fileManagerPath");
+      const fileManagerUpload = document.getElementById("fileManagerUpload");
+      const fileManagerSearchForm = document.getElementById("fileManagerSearchForm");
+      const fileManagerSearch = document.getElementById("fileManagerSearch");
+
+      function formatFileSize(bytes) {
+        if (!bytes) return "Folder";
+        const units = ["B", "KB", "MB", "GB"];
+        let size = bytes;
+        let unitIndex = 0;
+        while (size >= 1024 && unitIndex < units.length - 1) {
+          size /= 1024;
+          unitIndex += 1;
+        }
+        return `${size.toFixed(size >= 10 || unitIndex === 0 ? 0 : 1)} ${units[unitIndex]}`;
+      }
+
+      function escapeAdminText(value) {
+        return String(value || "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      function setFileManagerStatus(message, tone = "") {
+        if (!fileManagerStatus) return;
+        fileManagerStatus.textContent = message;
+        fileManagerStatus.dataset.tone = tone;
+      }
+
+      function getFileExtension(name = "") {
+        return String(name).split(".").pop()?.toLowerCase() || "";
+      }
+
+      function getFilePreviewType(entry) {
+        if (entry.type === "folder") return "folder";
+        const extension = getFileExtension(entry.name);
+        if (["jpg", "jpeg", "png", "gif", "webp", "avif", "svg"].includes(extension)) return "image";
+        if (["mp4", "webm", "ogg", "mov", "m4v"].includes(extension)) return "video";
+        if (["pdf"].includes(extension)) return "pdf";
+        return "file";
+      }
+
+      function renderFilePreview(entry, safeName, safeUrl) {
+        const previewType = getFilePreviewType(entry);
+        if (previewType === "image" && safeUrl) {
+          return `<div class="file-card-preview is-image"><img src="${safeUrl}" alt="${safeName}" loading="lazy" decoding="async"></div>`;
+        }
+        if (previewType === "video" && safeUrl) {
+          return `<div class="file-card-preview is-video"><video src="${safeUrl}" muted playsinline preload="metadata"></video><span>Video</span></div>`;
+        }
+        const label = previewType === "folder" ? "DIR" : (getFileExtension(entry.name) || "FILE").slice(0, 4).toUpperCase();
+        return `<div class="file-card-preview is-${previewType}"><span>${escapeAdminText(label)}</span></div>`;
+      }
+
+      function renderFileManager(entries = []) {
+        if (!fileManagerGrid) return;
+        fileManagerPath.textContent = `${fileManagerState.root} / ${fileManagerState.path || ""}`;
+        if (!entries.length) {
+          fileManagerGrid.innerHTML = '<p class="admin-preview-empty">No files found in this folder.</p>';
+          return;
+        }
+
+        fileManagerGrid.innerHTML = entries.map((entry) => {
+          const icon = entry.type === "folder" ? "folder" : "file";
+          const modified = entry.modifiedAt ? new Date(entry.modifiedAt).toLocaleString() : "";
+          const publicUrl = entry.url || "";
+          const safeName = escapeAdminText(entry.name);
+          const safePath = escapeAdminText(entry.path);
+          const safeUrl = escapeAdminText(publicUrl);
+          return `
+            <article class="file-card" data-type="${entry.type}" data-path="${safePath}" data-url="${safeUrl}">
+              ${renderFilePreview(entry, safeName, safeUrl)}
+              <button class="file-card-main" type="button" data-file-open="${safePath}">
+                <span class="file-card-icon ${icon}" aria-hidden="true">${entry.type === "folder" ? "DIR" : "FILE"}</span>
+                <span>
+                  <strong>${safeName}</strong>
+                  <em>${formatFileSize(entry.size)}${modified ? ` - ${modified}` : ""}</em>
+                </span>
+              </button>
+              <div class="file-card-controls">
+                ${publicUrl ? `<a href="${safeUrl}" target="_blank" rel="noreferrer">Open</a><button type="button" data-file-copy="${safeUrl}">Copy URL</button>` : ""}
+                <button class="danger-btn" type="button" data-file-delete="${safePath}">Delete</button>
+              </div>
+            </article>
+          `;
+        }).join("");
+      }
+
+      function sortFileEntries(entries = []) {
+        return [...entries].sort((a, b) => {
+          if (a.type !== b.type) {
+            return a.type === "folder" ? -1 : 1;
+          }
+          if (a.type === "file") {
+            return new Date(b.modifiedAt || 0).getTime() - new Date(a.modifiedAt || 0).getTime()
+              || String(a.name || "").localeCompare(String(b.name || ""), undefined, { numeric: true, sensitivity: "base" });
+          }
+          return String(a.name || "").localeCompare(String(b.name || ""), undefined, { numeric: true, sensitivity: "base" });
+        });
+      }
+
+      function normalizeFileSearchText(value) {
+        return String(value || "")
+          .toLowerCase()
+          .normalize("NFKD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/[^a-z0-9]+/g, " ")
+          .trim();
+      }
+
+      function getFilteredFileEntries() {
+        const query = normalizeFileSearchText(fileManagerState.query);
+        if (!query) return fileManagerState.entries;
+        const compactQuery = query.replace(/\s+/g, "");
+        const queryTokens = query.split(/\s+/).filter(Boolean);
+        return fileManagerState.entries.filter((entry) => {
+          return [entry.name, entry.path, entry.type, entry.url]
+            .some((value) => {
+              const text = normalizeFileSearchText(value);
+              const compactText = text.replace(/\s+/g, "");
+              return text.includes(query)
+                || compactText.includes(compactQuery)
+                || queryTokens.every((token) => text.includes(token));
+            });
+        });
+      }
+
+      function applyFileManagerSearch() {
+        const filteredEntries = getFilteredFileEntries();
+        renderFileManager(filteredEntries);
+        if (fileManagerState.query.trim()) {
+          setFileManagerStatus(`${filteredEntries.length} result(s) for "${fileManagerState.query.trim()}".`, filteredEntries.length ? "success" : "danger");
+          return;
+        }
+        setFileManagerStatus(`${fileManagerState.entries.length} item(s) in ${fileManagerState.root}.`, "success");
+      }
+
+      async function loadFileManager() {
+        if (!fileManagerGrid) return;
+        if (!window.GemplexAdminAuth?.getSession?.()?.token) {
+          setFileManagerStatus("Login again to view and upload files.", "danger");
+          return;
+        }
+        setFileManagerStatus("Loading files...");
+        const params = new URLSearchParams({ root: fileManagerState.root, path: fileManagerState.path });
+        const endpoint = window.GemplexApi?.apiUrl?.(`/api/files?${params.toString()}`) || `/api/files?${params.toString()}`;
+        const response = await fetch(endpoint, {
+          cache: "no-store",
+          headers: window.GemplexApi?.apiHeaders?.({ Accept: "application/json" }) || { Accept: "application/json" }
+        });
+        const payload = await response.json();
+        if (!response.ok) {
+          if (response.status === 401) {
+            window.GemplexAdminAuth?.clearSession?.();
+            document.body.classList.add("admin-locked");
+            document.body.classList.remove("admin-unlocked");
+            setFileManagerStatus("Admin session expired. Login again to view files.", "danger");
+            return;
+          }
+          throw new Error(payload.error || "Could not load files.");
+        }
+        fileManagerState.entries = sortFileEntries(payload.entries || []);
+        applyFileManagerSearch();
+      }
+
+      async function uploadManagedFiles(files) {
+        if (!files?.length) return;
+        setFileManagerStatus(`Uploading ${files.length} file(s)...`);
+        const placements = [];
+        const errors = [];
+        for (const file of files) {
+          const data = new FormData();
+          data.append("file", file);
+          const params = new URLSearchParams({ root: fileManagerState.root, path: fileManagerState.path });
+          const endpoint = window.GemplexApi?.apiUrl?.(`/api/files/upload?${params.toString()}`) || `/api/files/upload?${params.toString()}`;
+          const response = await fetch(endpoint, {
+            method: "POST",
+            headers: window.GemplexApi?.apiHeaders?.() || {},
+            body: data
+          });
+          const payload = await response.json().catch(() => ({}));
+          if (!response.ok) {
+            if (response.status === 401) {
+              window.GemplexAdminAuth?.clearSession?.();
+              document.body.classList.add("admin-locked");
+              document.body.classList.remove("admin-unlocked");
+              throw new Error("Admin session expired. Login again, then upload files.");
+            }
+            throw new Error(payload.error || `Could not upload ${file.name}.`);
+          }
+          try {
+            const placement = await addFileUploadToFrontend(payload.upload, file);
+            if (placement) {
+              placements.push(`${placement.title || file.name}: ${placement.city}`);
+            }
+          } catch (error) {
+            errors.push(`${file.name}: ${error.message}`);
+          }
+        }
+        await loadFileManager();
+        if (errors.length) {
+          setFileManagerStatus(`Files uploaded. Frontend sync needs review: ${errors.join(" / ")}`, "danger");
+          return;
+        }
+        setFileManagerStatus(placements.length ? `Upload complete. ${placements.join(" / ")}` : "Upload complete.", "success");
+      }
+
+      function titleFromFileName(fileName) {
+        const normalized = String(fileName || "Gemplex Upload")
+          .replace(/\.[^.]+$/, "")
+          .replace(/aaryamn/gi, "Aaryaman")
+          .replace(/aarymaan/gi, "Aaryaman")
+          .replace(/aaryaman\s*episode/gi, "Aaryaman Episode")
+          .replace(/episode\s*(\d+)/gi, "Episode $1")
+          .replace(/[-_]+/g, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+        return normalized.replace(/\b\w/g, (letter) => letter.toUpperCase()) || "Gemplex Upload";
+      }
+
+      function canonicalUploadTitleKey(value) {
+        const label = window.GemplexText?.formatDisplayTitle?.(value) || value || "";
+        return String(label)
+          .toLowerCase()
+          .replace(/aaryamn/g, "aaryaman")
+          .replace(/aarymaan/g, "aaryaman")
+          .replace(/[^a-z0-9]+/g, "");
+      }
+
+      function uploadTypeFromFile(file) {
+        if (file?.type?.startsWith("video/")) return "video";
+        if (file?.type?.startsWith("image/")) return "image";
+        return "file";
+      }
+
+      function getActiveManagedCityNames() {
+        const savedContent = window.GemplexCMS?.loadContent?.();
+        return (savedContent?.cities?.items || [])
+          .filter((city) => city.visible !== false && city.name)
+          .map((city) => city.name);
+      }
+
+      function isManagedCityActive(cityName) {
+        const value = String(cityName || "").trim().toLowerCase();
+        return getActiveManagedCityNames().some((city) => city.toLowerCase() === value);
+      }
+
+      function firstManagedCityName() {
+        return getActiveManagedCityNames()[0] || "Mumbai";
+      }
+
+      function scanCityFromText(text) {
+        const value = String(text || "").toLowerCase();
+        const cityRules = [
+          ["Jaipur", ["jaipur", "pink city", "rajasthan", "rajasthani", "folk", "hawa mahal", "amber", "amer"]],
+          ["Mumbai", ["mumbai", "bombay", "marine", "bandra", "local train", "film", "bollywood", "premiere"]],
+          ["Gujarat", ["gujarat", "gujarati", "garba", "ahmedabad", "vadodara", "rajkot"]],
+          ["Surat", ["surat", "diamond", "textile"]],
+          ["Indore", ["indore", "street food", "poha", "sarafa", "56 dukan"]],
+          ["Lucknow", ["lucknow", "ghazal", "nawab", "qawwali", "devotional", "bhajan"]],
+          ["Delhi", ["delhi", "campus", "metro", "ncr", "news"]]
+        ];
+        return cityRules.find(([city, keywords]) => isManagedCityActive(city) && keywords.some((keyword) => value.includes(keyword)))?.[0] || "";
+      }
+
+      function scanCategoryFromText(text, fileType) {
+        const value = String(text || "").toLowerCase();
+        if (value.match(/ai|future|robot|tech|cyber/)) return "ai";
+        if (value.match(/cartoon|animated|animation|kids|family/)) return "cartoon";
+        if (value.match(/devotional|bhajan|temple|spiritual|aarti|qawwali|ghazal/)) return "devotional";
+        if (value.match(/music|song|rap|beat|folk|mashup|concert/)) return "music";
+        if (value.match(/short|reel|clip/)) return "shorts";
+        if (fileType === "image") return "shorts";
+        return "movie";
+      }
+
+      async function scanPosterTone(file) {
+        if (!file?.type?.startsWith("image/")) {
+          return {};
+        }
+
+        try {
+          const bitmap = await createImageBitmap(file);
+          const canvas = document.createElement("canvas");
+          const size = 48;
+          canvas.width = size;
+          canvas.height = size;
+          const context = canvas.getContext("2d", { willReadFrequently: true });
+          context.drawImage(bitmap, 0, 0, size, size);
+          const data = context.getImageData(0, 0, size, size).data;
+          let red = 0;
+          let green = 0;
+          let blue = 0;
+          let count = 0;
+          for (let index = 0; index < data.length; index += 16) {
+            red += data[index];
+            green += data[index + 1];
+            blue += data[index + 2];
+            count += 1;
+          }
+          red /= count;
+          green /= count;
+          blue /= count;
+
+          if (blue > red + 20 && blue > green - 8 && isManagedCityActive("Mumbai")) return { city: "Mumbai", reason: "cool urban poster colors" };
+          if (green > red + 12 && green > blue + 12 && isManagedCityActive("Gujarat")) return { city: "Gujarat", reason: "green folk poster colors" };
+          if (red > 135 && green > 110 && blue < 95 && isManagedCityActive("Indore")) return { city: "Indore", reason: "street-food warm poster colors" };
+        } catch (error) {
+          return {};
+        }
+
+        return {};
+      }
+
+      async function scanPosterPlacement(file, title) {
+        const text = `${file?.name || ""} ${title || ""}`;
+        const fileType = uploadTypeFromFile(file);
+        const cityFromText = scanCityFromText(text);
+        const tone = await scanPosterTone(file);
+        const city = cityFromText || tone.city || firstManagedCityName();
+        const category = scanCategoryFromText(text, fileType);
+        return {
+          city,
+          category,
+          reason: cityFromText ? "filename keywords" : tone.reason || "default OTT placement"
+        };
+      }
+
+      function createPosterDescription(title, placement) {
+        const cleanTitle = window.GemplexText?.formatDisplayTitle?.(title) || title || "This story";
+        const category = placement?.category || "movie";
+        const city = placement?.city || "the city";
+        const templates = {
+          ai: `${cleanTitle} turns ${city} into a bold visual idea where imagination, tech, and local energy meet.`,
+          cartoon: `${cleanTitle} brings a playful city moment to life with humor, color, and easy family charm.`,
+          devotional: `${cleanTitle} carries a calm devotional mood built around faith, music, and quiet emotion.`,
+          music: `${cleanTitle} follows the sound of ${city} through rhythm, street energy, and local voices.`,
+          shorts: `${cleanTitle} is a compact ${city} story with a clear mood, human tension, and a memorable turn.`,
+          movie: `${cleanTitle} builds a cinematic ${city} story around emotion, conflict, and choices that matter.`
+        };
+        return templates[category] || templates.movie;
+      }
+
+      async function addFileUploadToFrontend(upload, file) {
+        const cms = window.GemplexCMS;
+        if (!cms || !upload?.url) return;
+
+        const type = uploadTypeFromFile(file);
+        if (type === "file") return;
+
+        const publicUrl = window.GemplexApi?.apiUrl?.(upload.url) || upload.url;
+        const urlCheck = await fetch(publicUrl, { method: "HEAD", cache: "no-store" }).catch(() => null);
+        if (urlCheck && !urlCheck.ok) {
+          throw new Error(`Upload saved but public URL is not reachable: ${upload.url}`);
+        }
+
+        const baseContent = await cms.loadContentFromBackend().catch(() => cms.loadContent());
+        const currentItems = cms.clone(baseContent.mediaLibrary?.items || []);
+        const now = Date.now();
+        const title = titleFromFileName(upload.originalName || upload.fileName || file.name);
+        const placement = await scanPosterPlacement(file, title);
+        const itemKey = canonicalUploadTitleKey(title);
+        const item = {
+          id: `file-upload-${now}`,
+          title,
+          description: createPosterDescription(title, placement),
+          category: type === "video" ? placement.category : placement.category,
+          creator: "Gemplex Admin",
+          city: placement.city,
+          status: "published",
+          thumbnail: type === "image" ? upload.url : "assets/wide-orbit.svg?v=18",
+          mediaSrc: type === "video" ? upload.url : "",
+          mediaType: type === "video" ? "video" : "image",
+          duration: type === "video" ? "New" : "Image",
+          views: "New",
+          createdAt: new Date().toISOString().slice(0, 10)
+        };
+        const existingIndex = currentItems.findIndex((current) => canonicalUploadTitleKey(current.title) === itemKey);
+        const existingItem = existingIndex >= 0 ? currentItems[existingIndex] : null;
+        const nextItem = existingItem
+          ? {
+              ...existingItem,
+              ...item,
+              id: existingItem.id,
+              description: existingItem.description && !/default OTT placement|poster scan|compact Mumbai story/i.test(existingItem.description)
+                ? existingItem.description
+                : item.description,
+              mediaSrc: type === "video" ? upload.url : existingItem.mediaSrc || item.mediaSrc,
+              thumbnail: type === "image" ? upload.url : existingItem.thumbnail || item.thumbnail,
+              updatedAt: new Date().toISOString()
+            }
+          : item;
+        const nextItems = existingIndex >= 0
+          ? [nextItem, ...currentItems.filter((_, index) => index !== existingIndex)]
+          : [nextItem, ...currentItems];
+        const nextContent = {
+          ...baseContent,
+          mediaLibrary: {
+            ...baseContent.mediaLibrary,
+            items: nextItems
+          }
+        };
+
+        try {
+          await cms.saveContentToBackend(nextContent);
+        } catch (error) {
+          cms.saveContent(nextContent);
+        }
+
+        return { ...placement, title };
+      }
+
+      fileManagerRoot?.addEventListener("change", () => {
+        fileManagerState.root = fileManagerRoot.value;
+        fileManagerState.path = "";
+        fileManagerState.query = "";
+        if (fileManagerSearch) fileManagerSearch.value = "";
+        loadFileManager().catch((error) => setFileManagerStatus(error.message, "danger"));
+      });
+
+      fileManagerSearchForm?.addEventListener("submit", (event) => {
+        event.preventDefault();
+        if (fileManagerSearch?.hidden) {
+          fileManagerSearch.hidden = false;
+          fileManagerSearch.focus();
+          return;
+        }
+        fileManagerState.query = fileManagerSearch?.value || "";
+        applyFileManagerSearch();
+      });
+
+      fileManagerSearch?.addEventListener("input", () => {
+        fileManagerState.query = fileManagerSearch.value;
+        applyFileManagerSearch();
+      });
+
+      document.getElementById("fileManagerBack")?.addEventListener("click", () => {
+        const parts = fileManagerState.path.split("/").filter(Boolean);
+        parts.pop();
+        fileManagerState.path = parts.join("/");
+        fileManagerState.query = "";
+        if (fileManagerSearch) fileManagerSearch.value = "";
+        loadFileManager().catch((error) => setFileManagerStatus(error.message, "danger"));
+      });
+
+      fileManagerUpload?.addEventListener("change", (event) => {
+        uploadManagedFiles(Array.from(event.target.files || []))
+          .catch((error) => setFileManagerStatus(error.message, "danger"))
+          .finally(() => { event.target.value = ""; });
+      });
+
+      fileManagerGrid?.addEventListener("click", async (event) => {
+        const folderButton = event.target.closest("[data-file-open]");
+        const copyButton = event.target.closest("[data-file-copy]");
+        const deleteButton = event.target.closest("[data-file-delete]");
+
+        if (copyButton) {
+          await navigator.clipboard.writeText(copyButton.dataset.fileCopy);
+          setFileManagerStatus("Public URL copied.", "success");
+          return;
+        }
+
+        if (deleteButton) {
+          const targetPath = deleteButton.dataset.fileDelete;
+          if (!confirm(`Delete ${targetPath}?`)) return;
+          const params = new URLSearchParams({ root: fileManagerState.root, path: targetPath });
+          const endpoint = window.GemplexApi?.apiUrl?.(`/api/files?${params.toString()}`) || `/api/files?${params.toString()}`;
+          const response = await fetch(endpoint, {
+            method: "DELETE",
+            headers: window.GemplexApi?.apiHeaders?.({ Accept: "application/json" }) || { Accept: "application/json" }
+          });
+          const payload = await response.json();
+          if (!response.ok) {
+            setFileManagerStatus(payload.error || "Could not delete file.", "danger");
+            return;
+          }
+          if (window.GemplexCMS) {
+            window.GemplexCMS.loadContentFromBackend()
+              .catch(() => window.GemplexCMS.loadContent())
+              .then((content) => window.dispatchEvent(new CustomEvent("gemplex-content-updated", { detail: { content } })));
+          }
+          const removedCount = payload.removedItems?.length || 0;
+          setFileManagerStatus(removedCount ? `Deleted successfully. Removed ${removedCount} frontend item(s).` : "Deleted successfully.", "success");
+          await loadFileManager();
+          return;
+        }
+
+        if (folderButton) {
+          const card = folderButton.closest(".file-card");
+          if (card?.dataset.type === "folder") {
+            fileManagerState.path = folderButton.dataset.fileOpen;
+            fileManagerState.query = "";
+            if (fileManagerSearch) fileManagerSearch.value = "";
+            await loadFileManager();
+          }
+        }
+      });
+
+      let fileManagerLoaded = false;
+      function ensureFileManagerLoaded(force = false) {
+        if (fileManagerLoaded && !force) return;
+        fileManagerLoaded = true;
+        loadFileManager().catch((error) => setFileManagerStatus(error.message, "danger"));
+      }
+
+      window.addEventListener("gemplex-admin-view", (event) => {
+        if (event.detail?.viewId === "file-manager") {
+          ensureFileManagerLoaded();
+        }
+      });
+
+      window.addEventListener("gemplex-admin-authenticated", () => {
+        if (window.location.hash === "#file-manager" || document.getElementById("file-manager")?.hidden === false) {
+          ensureFileManagerLoaded(true);
+        }
+      });
+
+      if (window.location.hash === "#file-manager") {
+        ensureFileManagerLoaded();
+      }
+    </script>
+    <script>
+      (function () {
+        const scripts = [
+          "https://unpkg.com/react@18/umd/react.production.min.js",
+          "https://unpkg.com/react-dom@18/umd/react-dom.production.min.js",
+          "https://unpkg.com/vue@3/dist/vue.global.prod.js",
+          "js/admin-app.js?v=5"
+        ];
+        let loading = false;
+
+        function loadScript(src) {
+          return new Promise((resolve, reject) => {
+            const script = document.createElement("script");
+            script.src = src;
+            script.async = false;
+            script.onload = resolve;
+            script.onerror = () => reject(new Error(`Could not load ${src}`));
+            document.body.appendChild(script);
+          });
+        }
+
+        function bootCmsTools() {
+          if (loading) {
+            return;
+          }
+          loading = true;
+          const status = document.querySelector("#adminStatus");
+          if (status) {
+            status.textContent = "Loading CMS tools...";
+          }
+          scripts.reduce((chain, src) => chain.then(() => loadScript(src)), Promise.resolve())
+            .catch((error) => {
+              console.error(error);
+              if (status) {
+                status.textContent = "CMS tools could not load";
+              }
+            });
+        }
+
+        function scheduleCmsTools() {
+          const run = () => {
+            if (document.body.classList.contains("admin-unlocked")) {
+              bootCmsTools();
+            }
+          };
+          if ("requestIdleCallback" in window) {
+            window.requestIdleCallback(run, { timeout: 1200 });
+          } else {
+            window.setTimeout(run, 350);
+          }
+        }
+
+        const observer = new MutationObserver(() => {
+          if (document.body.classList.contains("admin-unlocked")) {
+            observer.disconnect();
+            scheduleCmsTools();
+          }
+        });
+        observer.observe(document.body, { attributes: true, attributeFilter: ["class"] });
+
+        if (document.readyState === "complete") {
+          scheduleCmsTools();
+        } else {
+          window.addEventListener("load", scheduleCmsTools, { once: true });
+        }
+      }());
+    </script>
+    <script>
+      (function () {
+        function getSavedAdminTheme() {
+          try {
+            var saved = localStorage.getItem("gemplex-theme");
+            return saved === "light" || saved === "dark" ? saved : document.documentElement.dataset.theme || "dark";
+          } catch (error) {
+            return document.documentElement.dataset.theme || "dark";
+          }
+        }
+
+        function applyAdminTheme(theme, shouldSave) {
+          var nextTheme = theme === "light" || theme === "dark" ? theme : getSavedAdminTheme();
+          var isLight = theme === "light";
+          document.documentElement.dataset.theme = nextTheme;
+          document.documentElement.style.colorScheme = nextTheme;
+          if (document.body) {
+            document.body.dataset.theme = nextTheme;
+            document.body.classList.toggle("is-light", nextTheme === "light");
+            document.body.classList.toggle("is-dark", nextTheme !== "light");
+          }
+          if (shouldSave) {
+            try {
+              localStorage.setItem("gemplex-theme", nextTheme);
+            } catch (error) {}
+          }
+          var toggle = document.getElementById("themeToggle");
+          if (toggle) {
+            toggle.setAttribute("aria-pressed", String(nextTheme === "light"));
+            toggle.setAttribute("aria-label", nextTheme === "light" ? "Switch to dark mode" : "Switch to light mode");
+          }
+          return nextTheme;
+        }
+
+        function syncAdminThemeFromStorage() {
+          applyAdminTheme(getSavedAdminTheme(), false);
+        }
+
+        function bindAdminThemeToggle() {
+          var toggle = document.getElementById("themeToggle");
+          if (!toggle || toggle.dataset.adminThemeBound === "true") {
+            return;
+          }
+          toggle.dataset.adminThemeBound = "true";
+          toggle.addEventListener("click", function () {
+            var currentTheme = getSavedAdminTheme();
+            applyAdminTheme(currentTheme === "light" ? "dark" : "light", true);
+          });
+        }
+
+        syncAdminThemeFromStorage();
+        bindAdminThemeToggle();
+        window.addEventListener("storage", function (event) {
+          if (event.key === "gemplex-theme") {
+            syncAdminThemeFromStorage();
+          }
+        });
+        window.addEventListener("pageshow", syncAdminThemeFromStorage);
+        window.addEventListener("load", function () {
+          requestAnimationFrame(function () {
+            syncAdminThemeFromStorage();
+            bindAdminThemeToggle();
+            requestAnimationFrame(syncAdminThemeFromStorage);
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

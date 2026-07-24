@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gemplex | Download App</title>
+    <script>
+      (function(){
+        try {
+          var theme = localStorage.getItem("gemplex-theme");
+          if (theme !== "light" && theme !== "dark") {
+            theme = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+          }
+          var city = localStorage.getItem("gemplex-selected-city") || "all";
+          document.documentElement.classList.add("gemplex-theme-preload");
+          document.documentElement.dataset.theme = theme;
+          document.documentElement.dataset.cityTheme = city;
+          document.documentElement.style.colorScheme = theme;
+        } catch (error) {
+          document.documentElement.classList.add("gemplex-theme-preload");
+          document.documentElement.dataset.theme = "dark";
+          document.documentElement.dataset.cityTheme = "all";
+        }
+      })();
+    </script>
+    <script src="js/theme.js?v=4"></script>
+    <link rel="stylesheet" href="css/styles.css?v=160">
+  </head>
+  <body class="ott-flow-page app-download-page">
+    <header class="flow-topbar">
+      <a class="brand" href="javascript:void(0)" aria-label="Gemplex">
+        <img class="brand-logo" src="assets/gemplex-logo-teal.png?v=3" alt="Gemplex">
+      </a>
+      <a class="flow-link" href="details.html">Back to Details</a>
+    </header>
+
+    <main class="auth-shell">
+      <section class="auth-card app-card">
+        <span class="eyebrow">Gemplex Mobile</span>
+        <h1>Continue in the app</h1>
+        <p id="appCopy">Login on the website first, then use the secure app link to continue with the same token in the mobile app.</p>
+        <div class="details-actions">
+          <a class="primary-btn" id="openAppLink" href="#">Open Gemplex App</a>
+          <a class="secondary-btn" href="login.html">Login with Mobile</a>
+        </div>
+        <p class="auth-note">In production, this becomes a real App Store / Play Store deep link. The token handoff is already prepared.</p>
+      </section>
+    </main>
+
+    <script src="js/auth-client.js"></script>
+    <script src="js/app-download.js"></script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
